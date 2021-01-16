@@ -33,49 +33,45 @@ class TimeMachineService implements ITimeMachineService{
     }
 
     getSolarSystemPosition(timeMachine:TimeMachine): SpacePoint {
-        const sunDistance = 149600; //megaMetro -> Mm
-        //constante necessária
-        //CALC
-
+        const sunDistance = 149600; 
         const timeDifferential = calculateTimeDifferential(timeMachine);
-
         let position:SpacePoint = {x:0,y:0,z:0};
-        /**
-         * Calculo com o position
-         * Consulte o readme
-         */
 
-       
+        if(timeDifferential < 0) {
+            position.x = Math.sin(timeDifferential) * sunDistance;
+            position.y = Math.cos(sunDistance) * sunDistance;
+            position.z = timeMachine.currentPosition.z
+        } else {
+            position.x = Math.cos(timeDifferential) * sunDistance;
+            position.y = Math.sin(sunDistance) * sunDistance;
+            position.z = timeMachine.currentPosition.z
+        }
+
         return position;
     }
 
     getGalaxyPosition(timeMachine:TimeMachine): SpacePoint {
         const solarSystemPosition = this.getSolarSystemPosition(timeMachine);
         const timeBalance = calculateTimeBalance(timeMachine);
-        //CALC
+
         let position:SpacePoint = {x:0,y:0,z:0};
-        /**
-         * Calculo com o position
-         * Consulte o readme
-         */
-       
+
+        position.x = timeBalance.day * (solarSystemPosition.x + 20);
+        position.y = timeBalance.month * (solarSystemPosition.x + 11);
+        position.z = timeBalance.year * (solarSystemPosition.x + 2020);
+        
         return position;
     }
 
     getUniversePosition(timeMachine:TimeMachine): SpacePoint {
         const syncPulsars = synchronizePulsars(timeMachine);
         const spaceTime = calculateSpaceTime(timeMachine);
-
         const galaxyPosition = this.getGalaxyPosition(timeMachine);
 
-        //CALC
-
         let position:SpacePoint = {x:0,y:0,z:0};
-        /**
-         * Calculo com o position
-         * Consulte o readme
-         */
-
+        position.x = syncPulsars * spaceTime / galaxyPosition.x;
+        position.y = syncPulsars * spaceTime / galaxyPosition.y;
+        position.z = syncPulsars * spaceTime / galaxyPosition.z;
         return position;
     }
     

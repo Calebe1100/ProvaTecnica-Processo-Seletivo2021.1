@@ -3,11 +3,11 @@ import { TimeMachine } from "../entities/TimeMachine";
 import calculateTimeBalance from "./CalculateTimeBalance";
 
 const calculateSpaceTime = (timeMachine:TimeMachine) => {
-    /**
-     * CALC
-     */
+    const timeBalance = calculateTimeBalance(timeMachine);
+    
+    const spaceTime = Math.sqrt(Math.pow(timeBalance.year, 2) + Math.pow(timeBalance.month, 2) + Math.pow(timeBalance.day, 2));
 
-    return 0;
+    return spaceTime;
 }
 
 export default calculateSpaceTime;
